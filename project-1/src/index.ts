@@ -16,24 +16,32 @@ app.get("/health", async (req, res) => {
 });
 
 app.post("/sum", async (req, res) => {
-    const a = req.body.a;
-    const b = req.body.b;
-    
-    if (a > 1000000 || b > 1000000) {
-        return res.status(422).json({
-            message: "Sorry we dont support big numbers"
-        })
-    }
-    const result = a + b;
-
-    const request = await prismaClient.request.create({
-        data: {
-            a: a,
-            b: b,
-            answer: result,
-            type: "ADD"
+    try {
+        const a = req.body.a;
+        const b = req.body.b;
+        
+        if (a > 1000000 || b > 1000000) {
+            return res.status(422).json({
+                message: "Sorry we dont support big numbers"
+            })
         }
-    })
-    
-    res.json({ answer: result, id: request.id });
+        const result = a + b;
+
+        const request = await prismaClient.request.create({
+            data: {
+                a: a,
+                b: b,
+                answer: result,
+                type: "ADD"
+            }
+        })
+        
+        res.json({ answer: result, id: request.id });
+    } catch (error) {
+        console.error('Error in /sum endpoint:', error);
+        res.status(500).json({ 
+            error: "Internal server error", 
+            details: error instanceof Error ? error.message : "Unknown error" 
+        });
+    }
 })

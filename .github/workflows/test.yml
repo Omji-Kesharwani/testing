@@ -32,6 +32,13 @@ jobs:
     - name: Copy .env.example to .env
       run: cp ./project-1/.env.example ./project-1/.env
 
+    - name: Debug environment variables
+      run: |
+        cd project-1
+        echo "DATABASE_URL: $DATABASE_URL"
+        echo "Contents of .env file:"
+        cat .env
+
     - name: Install dependencies
       run: cd project-1 && npm ci
 
