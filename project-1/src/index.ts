@@ -5,6 +5,16 @@ export const app = express();
 
 app.use(express.json());
 
+// Health check endpoint
+app.get("/health", async (req, res) => {
+  try {
+    await prismaClient.$queryRaw`SELECT 1`;
+    res.json({ status: "healthy", database: "connected" });
+  } catch (error) {
+    res.status(500).json({ status: "unhealthy", database: "disconnected" });
+  }
+});
+
 app.post("/sum", async (req, res) => {
     const a = req.body.a;
     const b = req.body.b;

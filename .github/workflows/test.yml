@@ -14,7 +14,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: project-1/package-lock.json
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -25,7 +32,15 @@ jobs:
     - name: Copy .env.example to .env
       run: cp ./project-1/.env.example ./project-1/.env
 
-    - name : Give Permission
+    - name: Install dependencies
+      run: cd project-1 && npm ci
+
+    - name: Give Permission to scripts
       run: chmod +x ./project-1/scripts/*
-    - name: Run integration script
-      run: cd project-1 && npm run test:integration
+
+    - name: Run integration tests
+      run: cd project-1 && ./scripts/run-integration.sh
+
+    - name: Cleanup
+      if: always()
+      run: cd project-1 && docker compose down
