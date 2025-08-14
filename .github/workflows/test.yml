@@ -35,6 +35,9 @@ jobs:
     - name: Install dependencies
       run: cd project-1 && npm ci
 
+    - name: Generate Prisma client for Linux
+      run: cd project-1 && npx prisma generate
+
     - name: Give Permission to scripts
       run: chmod +x ./project-1/scripts/*
 

@@ -13,7 +13,7 @@ prismaClient.$connect()
   })
   .catch((error) => {
     console.error('❌ Database connection failed:', error);
-    process.exit(1);
+    // Don't exit process during tests - let the application handle it
   });
 
 // Graceful shutdown

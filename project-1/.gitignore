@@ -2,4 +2,6 @@ node_modules
 # Keep environment variables out of version control
 .env
 
-/src/generated/prisma
+# Exclude generated content but allow Prisma client
+/src/generated/
+!/src/generated/prisma/

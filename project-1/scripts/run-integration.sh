@@ -11,6 +11,10 @@ docker compose up -d db
 echo "🟡 Waiting for database to be ready..."
 ./scripts/wait-for-it.sh "postgresql://postgres:mysecretpassword@localhost:5432/postgres" -- echo '🟢 Database is ready!'
 
+# Regenerate Prisma client for the current platform
+echo "🔧 Regenerating Prisma client..."
+npx prisma generate
+
 # Run database migrations
 echo "🔄 Running database migrations..."
 npx prisma migrate dev --name init
