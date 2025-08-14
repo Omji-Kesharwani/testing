@@ -1,10 +1,9 @@
 name: CI/CD Pipeline
 
-on: 
-  push: 
+on:
+  push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -12,19 +11,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-    -name: Checkoutcode
-    uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    -name: Set up Docker Buildx
-    uses: docker/setup-qemu-action@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-    -name: Ensure Docker Compose is available
-    run: docker-compose version
+    - name: Set up Docker Compose
+      uses: docker/setup-qemu-action@v2
 
-    -name: Copy .env.example to .env
-    run: cp ./project-1/.env.example ./project-1-test/.env
+    - name: Ensure Docker Compose is available
+      run: docker-compose version
 
-    -name: Run integration scripts
-    run: cd project-1-test && npm run test:integration
+    - name: Copy .env.example to .env
+      run: cp ./1-integration-test/.env.example ./1-integration-test/.env
 
+    - name: Run integration script
+      run: cd 1-integration-test && npm run test:integration
